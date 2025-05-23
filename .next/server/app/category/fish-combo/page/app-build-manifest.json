@@ -1,0 +1,22 @@
+{
+  "pages": {
+    "/category/fish-combo/page": [
+      "static/chunks/src_app_globals_b80590.css",
+      "static/chunks/node_modules_4db70d._.js",
+      "static/chunks/src_e359ed._.js",
+      "static/chunks/src_app_layout_tsx_e620e0._.js",
+      "static/chunks/_41e535._.js",
+      "static/chunks/src_app_category_fish-combo_page_tsx_991619._.js",
+      "static/chunks/node_modules_next_dist_compiled_react_a1d82d._.js",
+      "static/chunks/node_modules_next_dist_compiled_react-dom_cjs_react-dom_development_c9a189.js",
+      "static/chunks/node_modules_next_dist_compiled_react-dom_87a050._.js",
+      "static/chunks/node_modules_next_dist_compiled_e13b54._.js",
+      "static/chunks/node_modules_next_dist_client_8bb71d._.js",
+      "static/chunks/node_modules_next_dist_091837._.js",
+      "static/chunks/node_modules_@swc_helpers_cjs_00636a._.js",
+      "static/chunks/[turbopack]_dev_client_hmr-client_ts_4da20b._.js",
+      "static/chunks/node_modules_next_dist_esm_build_templates_app-page_6318d0.js",
+      "static/chunks/node_modules_next_dist_esm_build_templates_app-page_baa527.js"
+    ]
+  }
+}
