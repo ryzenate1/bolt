@@ -39,8 +39,8 @@ export default function Cart() {
       id: user.defaultAddress.id,
       type: 'home' as const,
       name: user.defaultAddress.name,
-      phone: '',
-      addressLine1: user.defaultAddress.address,
+      phoneNumber: '',
+      address: user.defaultAddress.address,
       city: user.defaultAddress.city,
       state: user.defaultAddress.state,
       pincode: user.defaultAddress.pincode,
@@ -113,7 +113,7 @@ export default function Cart() {
       setSelectedAddressId(newAddress.id);
       
       const userLocationUpdate = {
-        address: `${newAddress.addressLine1}, ${newAddress.city}, ${newAddress.state} - ${newAddress.pincode}`,
+        address: `${newAddress.address}, ${newAddress.city}, ${newAddress.state} - ${newAddress.pincode}`,
         coordinates: newAddress.coordinates || { lat: 0, lng: 0 },
         pincode: newAddress.pincode
       };
@@ -271,10 +271,10 @@ export default function Cart() {
                           )}
                         </div>
                         <p className="mt-2 text-gray-700">
-                          {address.name}, {address.addressLine1}, {address.city}, {address.state} - {address.pincode}
+                          {address.name}, {address.address}, {address.city}, {address.state} - {address.pincode}
                         </p>
-                        {address.phone && (
-                          <p className="text-sm text-gray-500 mt-1">Phone: {address.phone}</p>
+                        {address.phoneNumber && (
+                          <p className="text-sm text-gray-500 mt-1">Phone: {address.phoneNumber}</p>
                         )}
                       </div>
                       <Button
@@ -454,7 +454,7 @@ export default function Cart() {
       <AddressFormDialog
         open={isAddressDialogOpen}
         onOpenChange={setIsAddressDialogOpen}
-        initialData={editingAddress}
+        address={editingAddress}
         onSave={handleSaveAddress}
       />
 

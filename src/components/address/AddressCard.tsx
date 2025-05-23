@@ -1,15 +1,26 @@
 'use client';
 
-import { MapPin, Home, Briefcase, MapPinIcon } from 'lucide-react';
+import { MapPin, Home, Briefcase, MapPinIcon, Edit2, Trash2, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Address } from './AddressFormDialog';
 
-type AddressCardProps = {
+export interface Address {
+  id: string;
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  pincode: string;
+  type?: 'home' | 'work' | 'other';
+  isDefault: boolean;
+  phoneNumber?: string;
+}
+
+interface AddressCardProps {
   address: Address;
-  isSelected: boolean;
-  onSelect: () => void;
-  onEdit: () => void;
-};
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+  onSetDefault: (id: string) => void;
+}
 
 const getAddressTypeIcon = (type: string) => {
   switch (type) {
@@ -22,69 +33,58 @@ const getAddressTypeIcon = (type: string) => {
   }
 };
 
-export function AddressCard({ address, isSelected, onSelect, onEdit }: AddressCardProps) {
+export const AddressCard = ({ address, onEdit, onDelete, onSetDefault }: AddressCardProps) => {
   return (
-    <div
-      className={`border rounded-lg p-4 transition-colors ${
-        isSelected ? 'border-tendercuts-red' : 'border-gray-200 hover:border-gray-300'
-      }`}
-    >
+    <div className="border border-gray-200 rounded-lg p-4 transition-colors hover:border-tendercuts-red/50">
       <div className="flex items-start">
-        <input
-          id={`address-${address.id}`}
-          type="radio"
-          className="mt-1 h-4 w-4 text-tendercuts-red focus:ring-tendercuts-red"
-          checked={isSelected}
-          onChange={onSelect}
-        />
-        
-        <div className="ml-3 flex-1">
+        <div className="flex-1">
           <div className="flex justify-between items-start">
             <div className="flex items-center">
               <span className="font-medium text-gray-800 capitalize">
-                {getAddressTypeIcon(address.type)}
-                {address.type}
+                {getAddressTypeIcon(address.type || 'home')}
+                {address.type || 'Home'}
               </span>
               {address.isDefault && (
-                <span className="ml-2 bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded">
+                <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">
                   Default
                 </span>
               )}
             </div>
-            
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-tendercuts-red hover:text-tendercuts-red/80 p-1 h-auto"
-              onClick={onEdit}
-            >
-              Edit
-            </Button>
-          </div>
-          
-          <div className="mt-1 space-y-1">
-            <p className="text-gray-600">{address.name}</p>
-            <p className="text-gray-600">{address.phone}</p>
-            <p className="text-gray-600">{address.addressLine1}</p>
-            {address.addressLine2 && <p className="text-gray-600">{address.addressLine2}</p>}
-            <div className="flex flex-wrap gap-x-2">
-              {address.landmark && <span className="text-gray-600">{address.landmark},</span>}
-              <span className="text-gray-600">{address.city},</span>
-              <span className="text-gray-600">{address.state} - {address.pincode}</span>
+            <div className="flex space-x-1">
+              <button
+                onClick={() => onEdit(address.id)}
+                className="p-1.5 text-gray-500 hover:text-tendercuts-red rounded-full hover:bg-gray-100"
+                aria-label="Edit address"
+              >
+                <Edit2 className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => onDelete(address.id)}
+                className="p-1.5 text-gray-500 hover:text-red-500 rounded-full hover:bg-red-50"
+                aria-label="Delete address"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
             </div>
           </div>
           
-          {isSelected && address.coordinates?.lat && address.coordinates?.lng && (
-            <div className="mt-2 pt-2 border-t border-gray-100">
-              <a
-                href={`https://www.google.com/maps?q=${address.coordinates.lat},${address.coordinates.lng}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-sm text-tendercuts-red hover:text-tendercuts-red/80"
+          <div className="mt-2 text-sm text-gray-600">
+            <p className="font-medium">{address.name}</p>
+            <p>{address.address}</p>
+            <p>
+              {address.city}, {address.state} - {address.pincode}
+            </p>
+          </div>
+          
+          {!address.isDefault && (
+            <div className="mt-3">
+              <button
+                onClick={() => onSetDefault(address.id)}
+                className="inline-flex items-center text-xs text-tendercuts-red hover:underline"
               >
-                <MapPin className="h-4 w-4 mr-1" />
-                View on Map
-              </a>
+                <Star className="h-3 w-3 mr-1 fill-current" />
+                Set as default
+              </button>
             </div>
           )}
         </div>

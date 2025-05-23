@@ -155,26 +155,10 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
           {isAuthenticated ? (
-            <div className="group relative">
-              <button className="flex flex-col items-center text-sm text-gray-700 hover:text-tendercuts-red transition-colors">
-                <User className="h-5 w-5 mb-1" />
-                <span>Hi, {user?.name.split(' ')[0]}</span>
-              </button>
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden group-hover:block">
-                <Link href="/account" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Account</Link>
-                <Link href="/orders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Orders</Link>
-                <button 
-                  onClick={() => {
-                    logout();
-                    // Optional: Redirect to home after logout
-                    window.location.href = '/';
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Logout
-                </button>
-              </div>
-            </div>
+            <Link href="/account" className="flex flex-col items-center text-sm text-gray-700 hover:text-tendercuts-red transition-colors">
+              <User className="h-5 w-5 mb-1" />
+              <span>Hi, {user?.name?.split(' ')[0] || 'User'}</span>
+            </Link>
           ) : (
             <Link href="/auth/login" className="flex flex-col items-center text-sm text-gray-700 hover:text-tendercuts-red transition-colors">
               <User className="h-5 w-5 mb-1" />

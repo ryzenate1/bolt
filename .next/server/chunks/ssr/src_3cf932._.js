@@ -748,9 +748,7 @@ DialogDescription.displayName = __TURBOPACK__imported__module__$5b$project$5d2f$
 "[project]/src/components/address/AddressFormDialog.tsx [app-ssr] (ecmascript)": (({ r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_import__, s: __turbopack_esm__, v: __turbopack_export_value__, n: __turbopack_export_namespace__, c: __turbopack_cache__, M: __turbopack_modules__, l: __turbopack_load__, j: __turbopack_dynamic__, P: __turbopack_resolve_absolute_path__, U: __turbopack_relative_url__, R: __turbopack_resolve_module_id_path__, g: global, __dirname, x: __turbopack_external_require__, y: __turbopack_external_import__ }) => (() => {
 "use strict";
 
-__turbopack_esm__({
-    "AddressFormDialog": ()=>AddressFormDialog
-});
+__turbopack_esm__({});
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/server/future/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/server/future/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/react-hook-form/dist/index.esm.mjs [app-ssr] (ecmascript)");
@@ -769,18 +767,16 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 ;
 ;
 ;
-function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
+const AddressFormDialog = ({ open, onOpenChange, onSave, initialData })=>{
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [showMap, setShowMap] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [selectedLocation, setSelectedLocation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(initialData?.coordinates || null);
+    const [selectedLocation, setSelectedLocation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(initialData?.coordinates);
     const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useForm"])({
         defaultValues: {
             type: 'home',
             name: '',
-            phone: '',
-            addressLine1: '',
-            addressLine2: '',
-            landmark: '',
+            phoneNumber: '',
+            address: '',
             city: '',
             state: 'Tamil Nadu',
             pincode: '',
@@ -804,22 +800,46 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
         setShowMap(false);
     // You could add reverse geocoding here to fill address fields
     };
-    const onSubmit = (data)=>{
-        onSave({
-            ...data,
-            coordinates: selectedLocation || {
-                lat: 0,
-                lng: 0
-            }
-        });
+    const onSubmit = async (data)=>{
+        setIsLoading(true);
+        try {
+            // Simulate API call
+            await new Promise((resolve)=>setTimeout(resolve, 1000));
+            onSave({
+                ...data,
+                coordinates: selectedLocation
+            });
+            onOpenChange(false);
+        } catch (error) {
+            console.error('Error saving address:', error);
+        } finally{
+            setIsLoading(false);
+        }
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         if (initialData) {
-            reset(initialData);
-            setSelectedLocation(initialData.coordinates);
+            const { id, ...rest } = initialData;
+            reset({
+                ...rest,
+                address: rest.address || '',
+                phoneNumber: rest.phoneNumber || '',
+                type: rest.type || 'home'
+            });
+            if (rest.coordinates) {
+                setSelectedLocation(rest.coordinates);
+            }
         } else {
-            reset();
-            setSelectedLocation(null);
+            reset({
+                type: 'home',
+                name: '',
+                phoneNumber: '',
+                address: '',
+                city: '',
+                state: 'Tamil Nadu',
+                pincode: '',
+                isDefault: false
+            });
+            setSelectedLocation(undefined);
         }
     }, [
         initialData,
@@ -838,12 +858,12 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                             children: initialData ? 'Edit Address' : 'Add New Address'
                         }, void 0, false, {
                             fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                            lineNumber: 87,
+                            lineNumber: 113,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                        lineNumber: 86,
+                        lineNumber: 112,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -860,7 +880,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: "Address Type"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 93,
+                                                lineNumber: 119,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -881,7 +901,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                                 value: type
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                                lineNumber: 97,
+                                                                lineNumber: 123,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -889,24 +909,24 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                                 children: type
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                                lineNumber: 103,
+                                                                lineNumber: 129,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, type, true, {
                                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                        lineNumber: 96,
+                                                        lineNumber: 122,
                                                         columnNumber: 19
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 94,
+                                                lineNumber: 120,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 92,
+                                        lineNumber: 118,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -917,17 +937,19 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: "Full Name"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 110,
+                                                lineNumber: 136,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
+                                                id: "name",
+                                                placeholder: "Enter your full name",
+                                                className: "w-full",
                                                 ...register('name', {
                                                     required: 'Name is required'
-                                                }),
-                                                placeholder: "Enter your full name"
+                                                })
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 111,
+                                                lineNumber: 137,
                                                 columnNumber: 15
                                             }, this),
                                             errors.name && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -935,13 +957,13 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: errors.name.message
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 115,
+                                                lineNumber: 143,
                                                 columnNumber: 31
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 109,
+                                        lineNumber: 135,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -952,35 +974,37 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: "Phone Number"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 119,
+                                                lineNumber: 147,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                                ...register('phone', {
+                                                id: "phoneNumber",
+                                                placeholder: "Phone number",
+                                                className: "w-full",
+                                                ...register('phoneNumber', {
                                                     required: 'Phone number is required',
                                                     pattern: {
                                                         value: /^[0-9]{10}$/,
                                                         message: 'Please enter a valid 10-digit phone number'
                                                     }
-                                                }),
-                                                placeholder: "Enter phone number"
+                                                })
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 120,
+                                                lineNumber: 148,
                                                 columnNumber: 15
                                             }, this),
-                                            errors.phone && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            errors.phoneNumber && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 className: "text-red-500 text-xs mt-1",
-                                                children: errors.phone.message
+                                                children: errors.phoneNumber.message
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 130,
-                                                columnNumber: 32
+                                                lineNumber: 160,
+                                                columnNumber: 38
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 118,
+                                        lineNumber: 146,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -994,7 +1018,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                         children: "Address"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                        lineNumber: 135,
+                                                        lineNumber: 165,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1006,75 +1030,78 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                                 className: "h-4 w-4 mr-1"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                                lineNumber: 141,
+                                                                lineNumber: 171,
                                                                 columnNumber: 19
                                                             }, this),
                                                             selectedLocation ? 'Change location' : 'Pin on map'
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                        lineNumber: 136,
+                                                        lineNumber: 166,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 134,
+                                                lineNumber: 164,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                                ...register('addressLine1', {
+                                                id: "address",
+                                                placeholder: "House/Flat/Apartment No., Building, Street",
+                                                className: "w-full",
+                                                ...register('address', {
                                                     required: 'Address is required'
-                                                }),
-                                                placeholder: "House/Flat No, Building Name"
+                                                })
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 145,
+                                                lineNumber: 175,
                                                 columnNumber: 15
                                             }, this),
-                                            errors.addressLine1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            errors.address && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 className: "text-red-500 text-xs mt-1",
-                                                children: errors.addressLine1.message
+                                                children: errors.address.message
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 149,
-                                                columnNumber: 39
+                                                lineNumber: 181,
+                                                columnNumber: 34
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 133,
+                                        lineNumber: 163,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "md:col-span-2",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                            ...register('addressLine2'),
-                                            placeholder: "Area, Street, Sector, Village",
-                                            className: "mt-2"
+                                            id: "addressLine2",
+                                            placeholder: "Area, Street, Sector, Village (Optional)",
+                                            className: "mt-2 w-full"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                            lineNumber: 153,
+                                            lineNumber: 185,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 152,
+                                        lineNumber: 184,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "md:col-span-2",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                            ...register('landmark'),
-                                            placeholder: "Landmark (Optional)"
+                                            id: "landmark",
+                                            placeholder: "Landmark (Optional)",
+                                            className: "w-full"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                            lineNumber: 161,
+                                            lineNumber: 193,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 160,
+                                        lineNumber: 192,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1084,10 +1111,13 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: "Pincode"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 168,
+                                                lineNumber: 201,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
+                                                id: "pincode",
+                                                placeholder: "Pincode",
+                                                className: "w-full",
                                                 ...register('pincode', {
                                                     required: 'Pincode is required',
                                                     pattern: {
@@ -1098,7 +1128,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 placeholder: "Pincode"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 169,
+                                                lineNumber: 202,
                                                 columnNumber: 15
                                             }, this),
                                             errors.pincode && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1106,13 +1136,13 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: errors.pincode.message
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 179,
+                                                lineNumber: 215,
                                                 columnNumber: 34
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 167,
+                                        lineNumber: 200,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1122,7 +1152,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: "City"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 183,
+                                                lineNumber: 219,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -1132,7 +1162,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 placeholder: "City"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 184,
+                                                lineNumber: 220,
                                                 columnNumber: 15
                                             }, this),
                                             errors.city && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1140,13 +1170,13 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: errors.city.message
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 188,
+                                                lineNumber: 224,
                                                 columnNumber: 31
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 182,
+                                        lineNumber: 218,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1156,7 +1186,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: "State"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 192,
+                                                lineNumber: 228,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -1166,7 +1196,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 placeholder: "State"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 193,
+                                                lineNumber: 229,
                                                 columnNumber: 15
                                             }, this),
                                             errors.state && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1174,13 +1204,13 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: errors.state.message
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 197,
+                                                lineNumber: 233,
                                                 columnNumber: 32
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 191,
+                                        lineNumber: 227,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1193,7 +1223,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 ...register('isDefault')
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 201,
+                                                lineNumber: 237,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -1202,19 +1232,19 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: "Set as default address"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 207,
+                                                lineNumber: 243,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 200,
+                                        lineNumber: 236,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                lineNumber: 91,
+                                lineNumber: 117,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -1228,7 +1258,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                         children: "Cancel"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 214,
+                                        lineNumber: 250,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1240,7 +1270,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                     className: "mr-2 h-4 w-4 animate-spin"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                    lineNumber: 225,
+                                                    lineNumber: 261,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Saving..."
@@ -1248,25 +1278,25 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                         }, void 0, true) : 'Save Address'
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 222,
+                                        lineNumber: 258,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                lineNumber: 213,
+                                lineNumber: 249,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                        lineNumber: 90,
+                        lineNumber: 116,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                lineNumber: 85,
+                lineNumber: 111,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -1285,7 +1315,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                         children: "Select Location"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 241,
+                                        lineNumber: 277,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1295,18 +1325,18 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                             className: "h-5 w-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                            lineNumber: 246,
+                                            lineNumber: 282,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 242,
+                                        lineNumber: 278,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                lineNumber: 240,
+                                lineNumber: 276,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1320,7 +1350,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 className: "h-12 w-12 text-tendercuts-red mx-auto mb-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 253,
+                                                lineNumber: 289,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1328,7 +1358,7 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: "Map will be displayed here"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 254,
+                                                lineNumber: 290,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1336,23 +1366,23 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                                 children: "Click on the map to select a location"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                                lineNumber: 255,
+                                                lineNumber: 291,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                        lineNumber: 252,
+                                        lineNumber: 288,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                    lineNumber: 251,
+                                    lineNumber: 287,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                lineNumber: 249,
+                                lineNumber: 285,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1364,37 +1394,37 @@ function AddressFormDialog({ open, onOpenChange, onSave, initialData }) {
                                     children: "Confirm Location"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                    lineNumber: 281,
+                                    lineNumber: 317,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                                lineNumber: 280,
+                                lineNumber: 316,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                        lineNumber: 239,
+                        lineNumber: 275,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                    lineNumber: 238,
+                    lineNumber: 274,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-                lineNumber: 237,
+                lineNumber: 273,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/address/AddressFormDialog.tsx",
-        lineNumber: 84,
+        lineNumber: 110,
         columnNumber: 5
     }, this);
-}
+};
 
 })()),
 "[project]/src/app/cart/page.tsx [app-ssr] (ecmascript)": (({ r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_import__, s: __turbopack_esm__, v: __turbopack_export_value__, n: __turbopack_export_namespace__, c: __turbopack_cache__, M: __turbopack_modules__, l: __turbopack_load__, j: __turbopack_dynamic__, P: __turbopack_resolve_absolute_path__, U: __turbopack_relative_url__, R: __turbopack_resolve_module_id_path__, g: global, __dirname, x: __turbopack_external_require__, y: __turbopack_external_import__ }) => (() => {
@@ -1904,8 +1934,8 @@ function Cart() {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "relative w-20 h-20 rounded-md overflow-hidden bg-gray-100",
-                                                        children: item.image && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                                            src: item.image,
+                                                        children: item.src && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                                            src: item.src,
                                                             alt: item.name,
                                                             layout: "fill",
                                                             objectFit: "cover"
@@ -2290,7 +2320,7 @@ function Cart() {
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$future$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$address$2f$AddressFormDialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AddressFormDialog"], {
                 open: isAddressDialogOpen,
                 onOpenChange: setIsAddressDialogOpen,
-                address: editingAddress,
+                initialData: editingAddress,
                 onSave: handleSaveAddress
             }, void 0, false, {
                 fileName: "[project]/src/app/cart/page.tsx",

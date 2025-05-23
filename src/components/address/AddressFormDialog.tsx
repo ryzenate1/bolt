@@ -7,84 +7,114 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Loader2, MapPin, X } from 'lucide-react';
 
-export type Address = {
+export interface Address {
   id?: string;
-  type: 'home' | 'work' | 'other';
+  type?: 'home' | 'work' | 'other';
   name: string;
-  phone: string;
-  addressLine1: string;
-  addressLine2?: string;
-  landmark?: string;
+  phoneNumber?: string;
+  address: string;
   city: string;
   state: string;
   pincode: string;
   isDefault: boolean;
-  coordinates: {
+  coordinates?: {
     lat: number;
     lng: number;
   };
-};
+}
 
-type AddressFormDialogProps = {
+export interface AddressFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSave: (address: Omit<Address, 'id'>) => void;
-  initialData?: Address;
-};
+  address?: Address;
+}
 
-export function AddressFormDialog({ open, onOpenChange, onSave, initialData }: AddressFormDialogProps) {
+export const AddressFormDialog = ({ open, onOpenChange, onSave, address }: AddressFormDialogProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showMap, setShowMap] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<{ lat: number; lng: number } | null>(
-    initialData?.coordinates || null
+  const [selectedLocation, setSelectedLocation] = useState<{ lat: number; lng: number } | undefined>(
+    address?.coordinates
   );
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<Omit<Address, 'id'>>({
     defaultValues: {
       type: 'home',
       name: '',
-      phone: '',
-      addressLine1: '',
-      addressLine2: '',
-      landmark: '',
+      phoneNumber: '',
+      address: '',
       city: '',
       state: 'Tamil Nadu',
       pincode: '',
       isDefault: false,
       coordinates: { lat: 0, lng: 0 },
-      ...initialData
+      ...address
     }
   });
 
-  const handleLocationSelect = (lat: number, lng: number) => {
-    setSelectedLocation({ lat, lng });
-    setValue('coordinates', { lat, lng });
-    setShowMap(false);
-    // You could add reverse geocoding here to fill address fields
+  const handleMapClick = (e: any) => {
+    if (e.latLng) {
+      const lat = e.latLng.lat();
+      const lng = e.latLng.lng();
+      setSelectedLocation({ lat, lng });
+      
+      // You could add reverse geocoding here to fill address fields
+      console.log(`Selected location: ${lat}, ${lng}`);
+      
+      // Close the map modal
+      setShowMap(false);
+    }
   };
 
-  const onSubmit = (data: Omit<Address, 'id'>) => {
-    onSave({
-      ...data,
-      coordinates: selectedLocation || { lat: 0, lng: 0 }
-    });
+  const onSubmit = async (data: Omit<Address, 'id'>) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      onSave({
+        ...data,
+        coordinates: selectedLocation,
+      });
+      onOpenChange(false);
+    } catch (error) {
+      console.error('Error saving address:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    if (initialData) {
-      reset(initialData);
-      setSelectedLocation(initialData.coordinates);
+    if (address) {
+      const { id, ...rest } = address;
+      reset({
+        ...rest,
+        address: rest.address || '',
+        phoneNumber: rest.phoneNumber || '',
+        type: rest.type || 'home',
+      });
+      if (rest.coordinates) {
+        setSelectedLocation(rest.coordinates);
+      }
     } else {
-      reset();
-      setSelectedLocation(null);
+      reset({
+        type: 'home',
+        name: '',
+        phoneNumber: '',
+        address: '',
+        city: '',
+        state: 'Tamil Nadu',
+        pincode: '',
+        isDefault: false,
+      });
+      setSelectedLocation(undefined);
     }
-  }, [initialData, open, reset]);
+  }, [address, open, reset]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{initialData ? 'Edit Address' : 'Add New Address'}</DialogTitle>
+          <DialogTitle>{address ? 'Edit Address' : 'Add New Address'}</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -109,8 +139,10 @@ export function AddressFormDialog({ open, onOpenChange, onSave, initialData }: A
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
               <Input
-                {...register('name', { required: 'Name is required' })}
+                id="name"
                 placeholder="Enter your full name"
+                className="w-full"
+                {...register('name', { required: 'Name is required' })}
               />
               {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
             </div>
@@ -118,16 +150,18 @@ export function AddressFormDialog({ open, onOpenChange, onSave, initialData }: A
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
               <Input
-                {...register('phone', {
+                id="phoneNumber"
+                placeholder="Phone number"
+                className="w-full"
+                {...register('phoneNumber', {
                   required: 'Phone number is required',
                   pattern: {
                     value: /^[0-9]{10}$/,
-                    message: 'Please enter a valid 10-digit phone number'
-                  }
+                    message: 'Please enter a valid 10-digit phone number',
+                  },
                 })}
-                placeholder="Enter phone number"
               />
-              {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+              {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber.message}</p>}
             </div>
 
             <div className="md:col-span-2">
@@ -143,38 +177,43 @@ export function AddressFormDialog({ open, onOpenChange, onSave, initialData }: A
                 </button>
               </div>
               <Input
-                {...register('addressLine1', { required: 'Address is required' })}
-                placeholder="House/Flat No, Building Name"
+                id="address"
+                placeholder="House/Flat/Apartment No., Building, Street"
+                className="w-full"
+                {...register('address', { required: 'Address is required' })}
               />
-              {errors.addressLine1 && <p className="text-red-500 text-xs mt-1">{errors.addressLine1.message}</p>}
+              {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address.message}</p>}
             </div>
 
             <div className="md:col-span-2">
               <Input
-                {...register('addressLine2')}
-                placeholder="Area, Street, Sector, Village"
-                className="mt-2"
+                id="addressLine2"
+                placeholder="Area, Street, Sector, Village (Optional)"
+                className="mt-2 w-full"
               />
             </div>
 
             <div className="md:col-span-2">
               <Input
-                {...register('landmark')}
+                id="landmark"
                 placeholder="Landmark (Optional)"
+                className="w-full"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Pincode</label>
               <Input
+                id="pincode"
+                placeholder="Pincode"
+                className="w-full"
                 {...register('pincode', {
                   required: 'Pincode is required',
                   pattern: {
                     value: /^[0-9]{6}$/,
-                    message: 'Please enter a valid 6-digit pincode'
-                  }
+                    message: 'Please enter a valid 6-digit pincode',
+                  },
                 })}
-                placeholder="Pincode"
               />
               {errors.pincode && <p className="text-red-500 text-xs mt-1">{errors.pincode.message}</p>}
             </div>
