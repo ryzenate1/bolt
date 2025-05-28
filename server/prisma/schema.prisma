@@ -1,0 +1,149 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  phoneNumber   String    @unique
+  password      String
+  role          String    @default("customer") // "customer" or "admin"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  addresses     Address[]
+  orders        Order[]
+  loyaltyPoints Int       @default(0)
+  loyaltyTier   String    @default("Bronze")
+  paymentMethods PaymentMethod[]
+  loyaltyActivities LoyaltyActivity[]
+}
+
+model Address {
+  id          String  @id @default(uuid())
+  userId      String
+  name        String
+  address     String
+  city        String
+  state       String
+  pincode     String
+  isDefault   Boolean @default(false)
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders      Order[]
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  imageUrl    String?
+  type        String?  @default("Fish")
+  icon        String?  @default("Fish")
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+}
+
+model Product {
+  id            String    @id @default(uuid())
+  name          String
+  slug          String    @unique
+  description   String?
+  price         Float
+  originalPrice Float?
+  imageUrl      String?
+  weight        String?
+  tag           String?
+  featured      Boolean   @default(false)
+  stock         Int       @default(0)
+  categoryId    String?
+  category      Category? @relation(fields: [categoryId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  orderItems    OrderItem[]
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  userId          String
+  addressId       String?
+  status          String      @default("pending")
+  totalAmount     Float
+  paymentStatus   String      @default("pending")
+  paymentMethod   String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address         Address?    @relation(fields: [addressId], references: [id])
+  orderItems      OrderItem[]
+  pointsEarned    Int         @default(0)
+}
+
+model OrderItem {
+  id          String  @id @default(uuid())
+  orderId     String
+  productId   String
+  quantity    Int
+  price       Float
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model PaymentMethod {
+  id          String  @id @default(uuid())
+  userId      String
+  type        String  // "card", "upi", etc.
+  cardNumber  String? // Last 4 digits only
+  cardBrand   String? // Visa, Mastercard, etc.
+  expiryDate  String?
+  isDefault   Boolean @default(false)
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LoyaltyActivity {
+  id          String   @id @default(uuid())
+  userId      String
+  points      Int
+  type        String   // "earned", "redeemed", "expired"
+  description String
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Remove the generic Card model if it's being replaced or not used for TrustedBadges
+// model Card {
+//   id          String  @id @default(uuid())
+//   title       String
+//   description String?
+//   imageUrl    String?
+//   link        String?
+//   section     String  // e.g., 'trusted-badges', 'offers'
+//   type        String? // e.g., 'icon-card', 'image-card'
+//   icon        String? // For icon-based cards, e.g., 'ShieldCheck' (Lucide icon name)
+//   order       Int?    // Optional ordering
+//   isActive    Boolean @default(true)
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+// }
+
+model TrustedBadge {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  iconName    String   @default("Shield")
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+}
